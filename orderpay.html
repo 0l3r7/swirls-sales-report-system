@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ orders: [] }" x-init="orders = JSON.parse(localStorage.getItem('orders')) || []">
+<html lang="en" x-data="{ orders: [],show: false }" x-init="orders = JSON.parse(localStorage.getItem('orders')) || []">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +10,10 @@
 <body 
   x-data="{
     orders: [],
+    show: false,
+    msg: '',
+    payment: 0,
+    change: null,
     init() {
       const saved = JSON.parse(localStorage.getItem('orders')) || [];
       this.orders = saved.map(item => ({
@@ -128,7 +132,7 @@
       </div>
   </div>
   <!-- Navigation Buttons -->
-    <div class="flex justify-between w-full mt-4 space-y-4 text-center w-full max-w-2xl px-2">
+    <div class="flex justify-between w-full mt-4 space-y-4 text-center max-w-2xl px-2">
 
         <!-- Back Button -->
         <a href="orderprice.html">
@@ -140,18 +144,108 @@
         
         <!-- Pay Button -->
         <div class="  bg-white rounded-xl px-4 py-1 mb-2 text-sm cursor-pointer">
-            <div class="  "> <a href="sumakses.html">
-              Php <span x-text="grandTotal"></span><br> <span class="text-sm">Total Amount</span> </a>
+            <div class="  "
+                 @click="
+                  msg = `Your total is ₱${grandTotal}`;
+                  show = true;
+          "> 
+              Php <span x-text="grandTotal"></span><br> <span class="text-sm">Total Amount</span> 
             </div>
         </div>
 
-          <!-- Next Button -->
-        <a href="sumakses.html">
-          <div class="w-10 h-10 bg-white flex items-center border-2 justify-center rounded-full shadow-md hover:bg-green-200 cursor-pointer transition">
-            <h1 class="text-xl font-bold">&gt;</h1>
+      <!-- Next Button -->
+      <button type="button">
+        <div
+          class="w-10 h-10 bg-white flex items-center 
+                border-2 justify-center rounded-full shadow-md
+                hover:bg-green-200 cursor-pointer transition"
+          @click="
+            msg = `Your total is ₱${grandTotal}`;
+            show = true;
+          "
+        >
+          <h1 class="text-xl font-bold">&gt;</h1>
+        </div>
+
+
+      </button>
+      
+
+      <!-- POPUP -->
+      <div 
+        x-show="show"
+        x-transition
+        class="fixed inset-0 flex items-center justify-center bg-black/40 z-50"
+        style="display: none;"
+      >
+        <div class="bg-white px-6 py-4 flex flex-col rounded-xl shadow-lg text-center text-sm font-medium space-y-4 w-80">
+
+          <div class="flex justify-between">
+            
+            <!-- Grand Total Message -->
+            <h1 class="text-lg" x-text=" `Total Amount: ₱${grandTotal}`"></h1>
+
+            <!-- Close Button -->
+            <button 
+              class="self-end text-lg text-center text-red-500 font-extrabold"
+              @click="show = false; payment = 0; change = null;"
+            >X</button>
+
+ 
           </div>
-        </a>
-    </div>
+
+          <!-- Message -->
+          <span class="text-lg font-bold" x-text="msg"></span>
+
+          <!-- Payment Input -->
+          <div class="flex flex-col gap-2">
+            <label for="payment">Enter Payment:</label>
+            <input 
+              class="border rounded px-2 py-1 text-lg font-semibold text-center" 
+              type="number" 
+              x-model.number="payment"
+              placeholder="₱0"
+            >
+
+
+          </div>
+
+          <!-- Buttons Container -->
+          <div class="flex gap-2 justify-center mt-2">
+
+            <!-- Pay Button -->
+            <button
+              class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+              @click="
+                if(payment >= grandTotal){
+                  change = payment - grandTotal;
+                  msg = `Payment Successful! Change: ₱${change}`;
+                } else {
+                  msg = 'Payment is not enough!';
+                  change = null;
+                }
+              "
+            >
+              Pay
+            </button>
+
+            <!-- Proceed Button (only shows after successful payment) -->
+            <button
+              x-show="change !== null"
+              class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+              @click="
+                window.location.href='sumakses.html';
+              "
+            >
+              Proceed
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+
+
 
 
       
