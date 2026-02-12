@@ -8,119 +8,288 @@
     <link href="./src/output.css" rel="stylesheet">
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
-<body>
+<body >
+
+<div x-data="{
+    open: false,
+    src: '',
+    cart: [],
+
+    init() {
+        this.loadCart()
+
+        window.addEventListener('storage', () => {
+            this.loadCart()
+        })
+    },
+
+    loadCart(){
+        this.cart = JSON.parse(localStorage.getItem('cart')) || []
+    },
+
+    clearCart(){
+        localStorage.removeItem('cart')
+        this.cart = []
+    }
+}">
+
 
  <!--background-->
-    <div class="min-h-screen m-0 p-0 bg-no-repeat bg-cover bg-center flex flex-col items-center justify-center  flex-wrap"
-    style="background-image: url('img/settings_sales_ordererzxs.png');">
+    <div class="min-h-full m-0 p-0 bg-no-repeat bg-cover bg-center h-screen font-PP"
+    style="background-image: url('img/settings_sales_ordererzxs.png');" >
+    
 
-        <header>
-                <!--Option to-->
-                <div class="container flex items-center justify-center flex-wrap gap-2 mb-7 pt-10">
-
-                    <!--logo-->
-                    <div class="flex items-center justify-center">
-                        <a href="index.html"><img src="img/swirls-logo.webp" alt="logo"
-                        class="w-40 sm:w-32 md:w-20 " ></a>
-                    </div>
-
-                    <!--background nung options-->
-                    <div class="flex items-center justify-between bg-white rounded-xl p-[10px] shadow-md ">
-
-                        <!--eto na talaga mga option ahahaha-->
-                        <div class="w-full lg:w-auto flex justify-center">
-                                <div class="flex flex-wrap justify-center gap-4  rounded font-[550] ">
-
-                                    <button class="bg-red-200 text-red-400 px-5 py-2 rounded-full"><a href="Menu.html">Menu</a></button>
-                                    <button class="hover:bg-red-200 text-red-300 px-5 py-2 rounded-full"><a href="Sales.html">Sales</a></button>
-                                    <button class="hover:bg-red-200 text-red-300 px-5 py-2 rounded-full"><a href="settings.html">Settings</a></button>
-                                    
-                                    
-                        </div>
-                    </div>
+     <!--Cart-->
+    <aside class="float-end w-[25%] max-[780px]:w-[35%] bg-white h-full p-6 shadow">
+        <h1 class="text-center text-2xl max-[780px]:text-xl">Current Order</h1>
+        <template x-for="(item, index) in cart" :key="index">
+            <div class="flex justify-between py-2 border-b">
+                <div>
+                    <p class="font-semibold" x-text="item.name"></p>
+                    <p class="text-sm text-gray-500" 
+                    x-text="item.flavor + ' - ' + item.size"></p>
+                    <p class="text-sm text-gray-500" 
+                    x-text="'₱' + item.price + ' x ' + item.quantity"></p>
                 </div>
-        </header>
 
-        <main>
-
-            <!--mga tinda to ahahaha-->
-            <div>
-                <div class="container flex items-center justify-center w-full h-full py-6 flex-wrap lg:w-auto  font-medium font-semibold ">
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h2 class="px-4 py-2" > <a href="ddClassic.html">Daydream Classic</h2>
-                        <div class="w-40 sm:w-32 md:w-24  ">
-                        <img src="img/Daydream Classic.avif" alt="pic"></div></a>
-                    </div>
-
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2 pr-3" ><a href="bigcone.html"> Big Cone</h1>
-                        <div class="w-40 sm:w-32  md:w-24 rotate-340">
-                        <img src="img/Big Cone.avif" alt="pic"></div></a>
-                    </div>
-
-                    <div class="flex-wrap  flex items-cent er justify-center flex-col  ">
-                        <h1 class="px-4 py-2 "> <a href="SundaeCup.html"> Sundae Cup</h1>
-                        <div class="w-40 sm:w-32  md:w-24 ">
-                        <img src="img/Sundae Cup (1).avif" alt="pic"></div></a>
-                    </div>
-
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2"> <a href="sundaeCone.html">Sundae Cone</h1>
-                        <div class="w-40 sm:w-32  md:w-24 ">
-                        <img src="img/Sundae Cone.avif" alt="pic"></div></a> 
-                    </div>
-                    
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2"><a href="ddpremium.html"> Daydream Premium</h1>
-                        <div class="w-40 sm:w-32  md:w-24 ">
-                        <img src="img/Daydream Premium.avif" alt="pic"></div></a> 
-                    </div>
-                </div>
-                <div class="container flex items-center justify-center w-full  py-8 flex-wrap lg:w-auto  font-semibold">
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2"> <a href="swirlD.html"> Swirl Delight</h1> 
-                        <div class="w-40 sm:w-32  md:w-24 ">
-                        <img src="img/Swirls Delight.avif" alt="pic"></div></a>
-                    </div>
-
-
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2"><a href="vanillaC.html ">Vanilla Cone</h1>
-                        <div class="w-40 sm:w-32  md:w-24 ">
-                        <img src="img/vanilla Cone.avif" alt="pic"></div></a> 
-                    </div>
-
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2"> <a href="sodaFl.html">Soda Float</h1>
-                        <div class="w-40 sm:w-32  md:w-24 ">
-                        <img src="img/Soda Float.png" alt="pic"></div></a>
-                    </div>
-
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2"> <a href="carfait.html">Carfait</h1>
-                        <div class="w-40 sm:w-32  md:w-24 ">
-                        <img src="img/Carfait.webp" alt="pic"></div></a>
-                    </div>
-
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2"> <a href="mlkshake.html">Milkshake</h1>
-                        <div class="w-40 sm:w-32  md:w-24 ">
-                        <img src="img/IceCream Milkshake.png" alt="pic"></div>
-                    </div>
-
-                    <div class="flex-wrap  flex items-center justify-center flex-col  ">
-                        <h1 class="px-4 py-2"> <a href="iceflt.html">Iced Coffee Float</h1>
-                        <div class="w-40 sm:w-32  md:w-24">
-                        <img src="img/IceCoffee MiloFloat.png" alt="pic"></div></a>
-                    </div>
-                
+                <div class="font-bold"
+                    x-text="'₱' + (item.price * item.quantity)">
                 </div>
             </div>
 
-        </main>
-        <footer>
+        </template>
+        
+        <div class="mt-4 font-bold text-right" 
+            x-text="'Total: ₱' + cart.reduce((sum, i) => sum + i.price*i.quantity, 0)">
+        </div>
+
+        <div class="mt-3 text-right">
+            <button 
+                @click="clearCart()"
+                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg active:scale-95">
+                Clear All
+            </button>
+        </div>
+
+    </aside>
+
+
+
+    <section>
+
+        <header class="">
+                <!--Logo-->
+             
+                    <div class="flex items-center p-5 space-x-5  max-[780px]:space-x-2">
+
+                        <!--logo-->
+                        <div class="">
+                            <a href="index.html"><img src="img/swirls-logo.webp" alt="logo"
+                            class="w-[85px] h-[85px] 
+                                max-[780px]:w-[55px] max-[780px]:h-[55px] " ></a>
+                        </div>
+
+                        <h1 class="text-2xl  max-[780px]:text-xl ">Menu</h1>
+                    </div>
+               
+        </header>
+        
+            
+        <!--mga tinda to ahahaha-->
+        <main>
+
+            <!--Product-->
+            <div class="flex flex-wrap items-center justify-center">
+
+                <!--DayDream Classic-->
+                <div class=" ">
+                    <img 
+                        src="product/dayDreamClassic.png" 
+                        alt=""
+                        class="active:scale-95 
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"  
+                                 @click="src='ddClassic.html'; open = true"
+                    >
+                </div>
+
+                <!--Big Cone-->
+                <div class=" ">
+                    <img 
+                        src="product/bigCone.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='bigcone.html'; open = true"
+                    >
+                </div>
+
+                <!--Sundae Cup-->
+                <div class=" ">
+                    <img 
+                        src="product/sundaeCup.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='sundaeCup.html'; open = true"
+                    >
+                </div>
+
+                <!--Sundae Cone-->
+                <div class=" ">
+                    <img 
+                        src="product/sundaeCone.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='sundaeCone.html'; open = true"
+                    >
+                </div>
+
+                <!--DayDream Premium-->
+                <div class=" ">
+                    <img 
+                        src="product/dayDreamPremium.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='ddpremium.html'; open = true"
+                    >
+                </div>
+
+                <!--Swirls Delight-->
+                <div class=" ">
+                    <img 
+                        src="product/swirlsDelight.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='swirlD.html'; open = true"
+                    >
+                </div>
+
+                <!--Vanilla Cone-->
+                <div class=" ">
+                    <img 
+                        src="product/vanillaCone.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='vanillaC.html'; open = true"
+                    >
+                </div>
+
+
+                <!--Soda Float-->
+                <div class=" ">
+                    <img 
+                        src="product/sodaFloat.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='sodaFl.html'; open = true"
+                    >
+                </div>
+
+                <!--Carfait-->
+                <div class=" ">
+                    <img 
+                        src="product/carfait.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='carfait.html'; open = true"
+                    >
+                </div>
+
+
+                <!--Milk Shake-->
+                <div class=" ">
+                    <img 
+                        src="product/milkShake.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='mlkshake.html'; open = true"
+                    >
+                </div>
+
+                <!--Milk Shake-->
+                <div class=" ">
+                    <img 
+                        src="product/iceCoffeeFloat.png" 
+                        alt=""
+                        class="active:scale-95
+                                w-[178px] h-[179px] 
+                                max-[780px]:w-[118px] max-[780px]:h-[119px]"
+                                @click="src='iceflt.html'; open = true"
+                                
+                    >
+                </div>
+                
+
+            </div>
            
-        </footer>
+            <div class="p-5 w-fit">
+                <a href="index.html">
+                <img 
+                    src="buttonPic/backButton.png" 
+                    alt=""
+                    class="active:scale-95
+                    w-[110px] h-[35px] 
+                                max-[780px]:w-[100px] max-[780px]:h-[30px]"
+                >
+                </a>
+            </div>
+
+        </main>
+    </section>
+
+       
+<!-- ================= MODAL ================= -->
+<div 
+    x-show="open"
+    x-transition.opacity
+    x-cloak
+    @keydown.escape.window="open = false"
+    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    @click.self="open = false"
+>
+
+    <div 
+        x-transition.scale
+        class="bg-[#FFF6F6] rounded-2xl shadow-2xl relative overflow-hidden
+           w-full  max-w-5xl h-[70vh]  
+           max-[780px]:max-w-2xl max-[780px]:h-[90vh] "
+    >
+
+        <!-- Close Button -->
+        <button 
+            @click="open = false"
+            class="absolute top-2 right-3  font-black text-black 
+                    text-2xl z-10 m-4 -mt-0 max-[780px]:text-xl">
+            ✕
+        </button>
+
+        <!-- Load Second File -->
+        <iframe
+            :src="src"
+            class="w-full h-full border-none">
+        </iframe>
+
+    </div>
+</div>
+
+    </div>
     </div>
 </body>
 </html>

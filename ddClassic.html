@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ order: '', size: '', price:'', Rprice: 0, msg: '', show: false }">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,149 +7,182 @@
   <link href="./src/output.css" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
+<body class="bg-no-repeat bg-cover bg-center h-screen p-5 font-PP"
+      x-data="{
+        flavors: {
+          'Brownie Avalanche': { quantity: 1, selectedSize: '' },
+          'Oreo Strawberry': { quantity: 1, selectedSize: '' },
+          'Oreo Chocolate':{ quantity: 1, selectedSize: '' }
+        },
+        selectedFlavor: 'Brownie Avalanche',
 
+        addToCart() {
+          const prices = { Small: 55, Medium: 69, Large: 85 };
+          let anyAdded = false;
 
+          for (const [flavorflavor, data] of Object.entries(this.flavors)) {
+            if (data.selectedSize && data.quantity > 0) {
+              const price = prices[data.selectedSize];
 
-<body class="min-h-screen bg-no-repeat bg-cover bg-center h-screen overflow-hidden" 
-      style="background-image: url('img/Flavors.png');"
-      x-data="{ order: '', size: '', price:''}">
+              const item = {
+                name: 'DayDream Classic',
+                flavor: flavorflavor,
+                size: data.selectedSize,
+                quantity: data.quantity,
+                price: price
+              };
 
-        <!-- Next Button -->
-        <div class="absolute right-4 pt-5">
-            <div 
-                class="w-12 h-12 bg-white flex items-center border-2 justify-center rounded-full shadow-md hover:bg-[rgba(120,255,201,1)] cursor-pointer transition"
-                @click="
-                let orders = JSON.parse(localStorage.getItem('orders')) || [];
-                if (orders.length > 0) {
-                    window.location.href = 'orders.html';
-                } else {
-                    msg = '⚠️ Select both flavor and size!';
-                            }
-                            show = true;
-                            setTimeout(() => show = false, 2000);"
-                >
-                <h1 class="text-3xl pb-[12%] font-bold">></h1>
-            </div>
+              // Save in localStorage
+              let cart = JSON.parse(localStorage.getItem('cart')) || [];
+              cart.push(item);
+              localStorage.setItem('cart', JSON.stringify(cart));
+
+              window.parent.postMessage({ type: 'addToCart', item: item }, '*');
+
+              // Reset after adding
+              data.quantity = 1;
+              data.selectedSize = '';
+              anyAdded = true;
+            }
+          }
+
+          if (anyAdded) {
+            alert('Selected items added to cart!');
+          } else {
+            alert('Please select size and quantity for at least one flavor!');
+          }
+        }
+      }">
+
+  <h1 class="text-xl max-[780px]:text-sm mb-4 max-[780px]:mb-0">DayDream Classic Flavors</h1>
+
+  <div class="flex flex-1 space-x-5 overflow-x-auto items-start px-2 py-3 no-scrollbar">
+
+    <!-- Brownie Avalanche -->
+    <div class="rounded-2xl" @click="selectedFlavor='Brownie Avalanche'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img src="flavors/dayDreamClassicFlavors/brownieAvalanche.png" alt="Brownie Avalanche" class="-mt-15 ml-7 w-[126px] h-[126px]">
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">Brownie Avalanche</h1>
         </div>
 
-
-
-  <div class="flex h-full">
-        <!-- Side Panel -->
-        <aside class="col-span-1 mr-[2%] w-[250px] border-r-2  bg-white  flex flex-col items-center">
-
-        <section class="text-center mt-2">
-            <a href="index.html"><img src="img/swirls-logo.webp" alt="logo" class="w-40 sm:w-32 md:w-20 mx-auto"></a>
-            <h1 class="mt-2 text-xl font-bold">Daydream Classic</h1>
-            <h2 class="mt-1  text-gray-600">Flavors</h2>
-
-            <ul class="flex flex-col gap-2">
-
-            <template x-for="flavor in ['Brownie Avalanche', 'Oreo Strawberry', 'Oreo Chocolate', 'Oreo Vanilla', 'Strawberry', 'Blueberry', 'Snickers', 'Kitkat']">
-
-                <li 
-                class="px-4 py-2 rounded-full hover:bg-pink-300 w-fit cursor-pointer transition" 
-                :class="{ 'bg-pink-400 text-white': order === flavor }"
-                @click="order = flavor"
-                x-text="flavor">
-                </li>
-                
-            </template>
-            </ul>
-        </section>
-        </aside>
-
-        <!-- Back Button -->
-        <div class="flex items-end pb-15">
-        <a href="Menu.html">
-            <div class="w-12 h-12 bg-white flex items-center border-2 justify-center rounded-full shadow-md hover:bg-[rgba(120,255,201,1)] cursor-pointer transition">
-            <h1 class="text-3xl pb-[12%] font-bold">&lt;</h1>
-            </div>
-        </a>
-        </div>
-
-    <!-- Sizes -->
-    <main class="flex-1 flex flex-col items-center justify-center mb-[10%] pr-14">
-      <div class="flex flex-wrap justify-center gap-6">
-            <div 
-            class="bg-white p-4 pl-7 pr-7 rounded-xl text-center shadow-md hover:bg-green-300 cursor-pointer transition" 
-            :class="{ ' text-black border-4 border-green-300'  : size === 'Small', }"
-            @click="size = 'Small'; price = 'Php 55' ; Rprice= 55"
-            >
-            
-            <h3 class="text-xl">Small</h3><h2>Php 55</h2><h3>8oz</h3>
-            </div>
-            <div 
-            class="bg-white p-4 pl-7 pr-7 rounded-xl text-center shadow-md hover:bg-green-300 cursor-pointer transition"
-            :class="{ ' text-black border-4 border-green-300': size === 'Medium' }"
-            @click="size = 'Medium'; price = 'Php 69';Rprice= 69">
-            <h3 class="text-xl">Medium</h3><h2>Php 69</h2><h3>12oz</h3>
-            </div>
-            <div 
-            class="bg-white p-4 pl-7 pr-7 rounded-xl text-center shadow-md hover:bg-green-300 cursor-pointer transition"
-            :class="{ ' text-black border-4 border-green-300': size === 'Large' }"
-            @click="size = 'Large'; price = 'Php 85'; Rprice= 85">
-            <h3 class="text-xl">Large</h3><h2>Php 85</h2><h3>16oz</h3>
-            </div>
-            
-        </div>
-
-
-
-
-            <div class=" flex flex-col gap-3 items-center justify-center  mt-[10%] pr-5">
-
-             <!-- Add Button -->
-            <button  
-                    type="button"
-                    class="w-16 h-16 mt-[10%]  bg-white flex items-center justify-center rounded-full shadow-md border-2 hover:bg-[rgba(120,255,201,1)] cursor-pointer transition text-6xl font-bold"
-                    @click="
-                        if (order && size) {
-                            let orders = JSON.parse(localStorage.getItem('orders')) || [];
-                            orders.push({ flavor: order, size: size, price: price, Rprice: Rprice});
-                            localStorage.setItem('orders', JSON.stringify(orders));
-                            msg = `✅ Added: ${order} - ${size} - ${price}`;
-                        } else {
-                            msg = '⚠️ Select both flavor and size!';
-                        }
-                        show = true;
-                        setTimeout(() => show = false, 2000);
-                    "
-                >
-                    <span class="text-red-300 mb-3">+</span>
-                </button>
-
-                <!-- POPUP di ko ma alala tamang term-->
-                <div 
-                    x-show="show" 
-                    x-transition 
-                    class=" bg-white px-4 py-2 t-20 rounded-lg shadow-lg text-center text-sm font-medium "
-                    style="display: none;"
-                >
-                    <span x-text="msg"></span>
+        <!-- Sizes -->
+        <div class="space-y-3 max-[780px]:space-y-2">
+          <template x-for="size in ['Small','Medium','Large']" :key="size">
+            <div>
+              <div @click.stop="flavors['Brownie Avalanche'].selectedSize = size"
+                   :class="flavors['Brownie Avalanche'].selectedSize === size ? 'bg-blue-200' : ''"
+                   class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
+                <div class="flex items-center">
+                  <h1 class="max-[780px]:text-sm pr-2 text-center" x-text="size + ':'"></h1>
+                  <p class="pr-0.5">₱</p>
+                  <p class="text-xs mt-0.5" x-text="size==='Small'?55:size==='Medium'?69:85"></p>
                 </div>
+              </div>
             </div>
-
-
-            <!--product-->
-        <div class=" flex items-end absolute right-4 bottom-4  pr-15  justify-between">
-            <div class="w-40 sm:w-32 md:w-35 rotate-345">
-                        <img src="img/Daydream Classic.avif" alt="pic">
-            </div>
+          </template>
         </div>
-         <div class=" flex items-end absolute right-1 bottom-0.5 pb-5  justify-between">
-            <div class="w-40 sm:w-32 md:w-40 rotate-355">
-                        <img src="img/Daydream Classic.avif" alt="pic">
-            </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Brownie Avalanche'].quantity > 1) flavors['Brownie Avalanche'].quantity--; else flavors['Brownie Avalanche'].quantity=1" class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">−</button>
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Brownie Avalanche'].quantity"></span>
+          </span>
+          <button @click.stop="flavors['Brownie Avalanche'].quantity++" class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Oreo Strawberry -->
+    <div class="rounded-2xl" @click="selectedFlavor='Oreo Strawberry'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img src="flavors/dayDreamClassicFlavors/oreoStrawberry.png" alt="Oreo Strawberry" class="-mt-15 ml-7 w-[126px] h-[126px]">
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">Oreo Strawberry</h1>
+        </div>
+
+        <!-- Sizes -->
+        <div class="space-y-3 max-[780px]:space-y-2">
+          <template x-for="size in ['Small','Medium','Large']" :key="size">
+            <div>
+              <div @click.stop="flavors['Oreo Strawberry'].selectedSize = size"
+                   :class="flavors['Oreo Strawberry'].selectedSize === size ? 'bg-blue-200' : ''"
+                   class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
+                <div class="flex items-center">
+                  <h1 class="max-[780px]:text-sm pr-2 text-center" x-text="size + ':'"></h1>
+                  <p class="pr-0.5">₱</p>
+                  <p class="text-xs mt-0.5" x-text="size==='Small'?55:size==='Medium'?69:85"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Oreo Strawberry'].quantity > 1) flavors['Oreo Strawberry'].quantity--; else flavors['Oreo Strawberry'].quantity=1" class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">−</button>
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Oreo Strawberry'].quantity"></span>
+          </span>
+          <button @click.stop="flavors['Oreo Strawberry'].quantity++" class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Oreo Chocolate -->
+    <div class="rounded-2xl" @click="selectedFlavor='Oreo Chocolate'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img src="flavors/dayDreamClassicFlavors/oreoChocolate.png" alt="Oreo Chocolate" class="-mt-15 ml-7 w-[126px] h-[126px]">
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">Oreo Chocolate</h1>
+        </div>
+
+        <!-- Sizes -->
+        <div class="space-y-3 max-[780px]:space-y-2">
+          <template x-for="size in ['Small','Medium','Large']" :key="size">
+            <div>
+              <div @click.stop="flavors['Oreo Chocolate'].selectedSize = size"
+                   :class="flavors['Oreo Chocolate'].selectedSize === size ? 'bg-blue-200' : ''"
+                   class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
+                <div class="flex items-center">
+                  <h1 class="max-[780px]:text-sm pr-2 text-center" x-text="size + ':'"></h1>
+                  <p class="pr-0.5">₱</p>
+                  <p class="text-xs mt-0.5" x-text="size==='Small'?55:size==='Medium'?69:85"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Oreo Chocolate'].quantity > 1) flavors['Oreo Chocolate'].quantity--; 
+                    else flavors['Oreo Chocolate'].quantity=1" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">−</button>
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Oreo Chocolate'].quantity"></span>
+          </span>
+          <button @click.stop="flavors['Oreo Chocolate'].quantity++" 
+                class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
 
   </div>
-    
-        
-    </main>
-    
-        
 
-        
+  <!-- Add to Cart -->
+  <div class="shrink-0 pb-2 flex float-right mt-3">
+    <button class="active:scale-95" @click="addToCart()">
+      <img src="buttonPic/addToOrderBtn.png" alt="Add to Button" class="w-[130px] h-[40px]">
+    </button>
+  </div>
+
 </body>
 </html>
