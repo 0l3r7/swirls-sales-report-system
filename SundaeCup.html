@@ -43,7 +43,7 @@
                       cart.push(item);
                       localStorage.setItem('cart', JSON.stringify(cart));
 
-                      data.quantity = 1;
+                      data.quantity = 0;
                       data.selectedSize = '';
                       anyAdded = true;
                     }
@@ -94,8 +94,8 @@
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Blueberry'].quantity > 1) flavors['Blueberry'].quantity--; 
-                    else flavors['Blueberry'].quantity=1" 
+          <button @click.stop="if(flavors['Blueberry'].quantity > 0) flavors['Blueberry'].quantity--; 
+                    else flavors['Blueberry'].quantity=0" 
                     class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
                     −
           </button>
@@ -139,8 +139,8 @@
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Caramel'].quantity > 1) flavors['Caramel'].quantity--; 
-                    else flavors['Caramel'].quantity=1" 
+          <button @click.stop="if(flavors['Caramel'].quantity > 0) flavors['Caramel'].quantity--; 
+                    else flavors['Caramel'].quantity=0" 
                     class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
                     −
           </button>
@@ -184,8 +184,8 @@
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Chocolate'].quantity > 1) flavors['Chocolate'].quantity--; 
-                    else flavors['Chocolate'].quantity=1" 
+          <button @click.stop="if(flavors['Chocolate'].quantity > 0) flavors['Chocolate'].quantity--; 
+                    else flavors['Chocolate'].quantity=0" 
                     class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
                     −
           </button>
@@ -229,8 +229,8 @@
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Mango'].quantity > 1) flavors['Mango'].quantity--; 
-                    else flavors['Mango'].quantity=1" 
+          <button @click.stop="if(flavors['Mango'].quantity > 0) flavors['Mango'].quantity--; 
+                    else flavors['Mango'].quantity=0" 
                     class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
                     −
           </button>
@@ -274,8 +274,8 @@
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Strawberry'].quantity > 1) flavors['Strawberry'].quantity--; 
-                    else flavors['Strawberry'].quantity=1" 
+          <button @click.stop="if(flavors['Strawberry'].quantity > 0) flavors['Strawberry'].quantity--; 
+                    else flavors['Strawberry'].quantity=0" 
                     class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
                     −
           </button>

@@ -10,7 +10,7 @@
 <body class="bg-no-repeat bg-cover bg-center h-screen p-5 font-PP"
 x-data="{
           flavors: {
-            'Big Cone': { quantity: 1, }
+            'Big Cone': { quantity: 0, }
 
           },
 
@@ -39,7 +39,7 @@ x-data="{
                 cart.push(item);
                 localStorage.setItem('cart', JSON.stringify(cart));
 
-                data.quantity = 1;
+                data.quantity = 0;
                 anyAdded = true;
                 }
             }
@@ -89,8 +89,8 @@ x-data="{
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Big Cone'].quantity > 1) flavors['Big Cone'].quantity--; 
-                    else flavors['Big Cone'].quantity=1" 
+          <button @click.stop="if(flavors['Big Cone'].quantity > 0) flavors['Big Cone'].quantity--; 
+                    else flavors['Big Cone'].quantity=0" 
                     class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
                     −
           </button>

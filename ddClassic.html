@@ -10,14 +10,14 @@
 <body class="bg-no-repeat bg-cover bg-center h-screen p-5 font-PP"
       x-data="{
                 flavors: {
-                  'Brownie Avalanche': { quantity: 1, selectedSize: '' },
-                  'Oreo Strawberry': { quantity: 1, selectedSize: '' },
-                  'Oreo Chocolate': { quantity: 1, selectedSize: '' },
-                  'Oreo Vanilla': { quantity: 1, selectedSize: '' },
-                  'Strawberry': { quantity: 1, selectedSize: '' },
-                  'Blueberry': { quantity: 1, selectedSize: '' },
-                  'Snickers': { quantity: 1, selectedSize: '' },
-                  'Kitkat': { quantity: 1, selectedSize: '' },
+                  'Brownie Avalanche': { quantity: 0, selectedSize: '' },
+                  'Oreo Strawberry': { quantity: 0, selectedSize: '' },
+                  'Oreo Chocolate': { quantity: 0, selectedSize: '' },
+                  'Oreo Vanilla': { quantity: 0, selectedSize: '' },
+                  'Strawberry': { quantity: 0, selectedSize: '' },
+                  'Blueberry': { quantity: 0, selectedSize: '' },
+                  'Snickers': { quantity: 0, selectedSize: '' },
+                  'Kitkat': { quantity: 0, selectedSize: '' },
                 },
 
                 showPopup: false,
@@ -45,7 +45,7 @@
                       cart.push(item);
                       localStorage.setItem('cart', JSON.stringify(cart));
 
-                      data.quantity = 1;
+                      data.quantity = 0;
                       data.selectedSize = '';
                       anyAdded = true;
                     }
@@ -159,8 +159,8 @@
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Oreo Strawberry'].quantity > 1) flavors['Oreo Strawberry'].quantity--; 
-                              else flavors['Oreo Strawberry'].quantity=1" 
+          <button @click.stop="if(flavors['Oreo Strawberry'].quantity > 0) flavors['Oreo Strawberry'].quantity--; 
+                              else flavors['Oreo Strawberry'].quantity=0" 
             class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
             −
           </button>
