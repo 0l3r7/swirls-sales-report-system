@@ -7,91 +7,138 @@
     <link href="./src/output.css" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
+<body class="bg-no-repeat bg-cover bg-center h-screen p-5 font-PP"
+x-data="{
+          flavors: {
+            'Big Cone': { quantity: 1, }
+
+          },
+
+          showPopup: false,
+          popupMessage: '',
+
+         addToCart() {
+            const price = 40; // fixed price
+            let anyAdded = false;
+
+            for (const [flavorName, data] of Object.entries(this.flavors)) {
+
+                if (data.quantity > 0) {
+
+                const item = {
+                    name: 'Big Cone',
+                    flavor: flavorName,
+                    quantity: data.quantity,
+                    price: price,
+                    size: 'Big Cone',
+                };
+
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push(item);
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                data.quantity = 1;
+                anyAdded = true;
+                }
+            }
+
+            if (anyAdded) {
+                this.popupMessage = 'Big Cone added to cart!';
+                this.showPopup = true;
+            } else {
+                this.popupMessage = 'Please select quantity!';
+                this.showPopup = true;
+            }
+            }
+
+        }">
 
 
-<body class="bg-no-repeat bg-cover bg-center h-screen  p-5 font-PP"
-      x-data="{ quantity: 1 }">
+  <h1 class="text-xl max-[780px]:text-sm mb-4 max-[780px]:mb-0">DayDream Classic Flavors</h1>
 
+  <div class="flex flex-1 space-x-5 overflow-x-auto justify-center items-center px-2 py-3 no-scrollbar ">
 
-    <h1 class="text-xl max-[780px]:text-sm mb-4  max-[780px]:mb-0 ">Big Cone</h1>
+    <!-- Big Cone -->
+    <div class="rounded-2xl" @click="selectedFlavor='Big Cone'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
 
-    <!-- products -->
-    <div class="flex flex-1 justify-center items-center space-x-5 overflow-x-auto  px-2 py-4 no-scrollbar" >
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/bigConePic/bigCone.png" 
+              alt="Big Cone" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
 
-        <!-- Big Cone -->
-        <div class=" rounded-2xl ">
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Big Cone
+          </h1>
+        </div>
 
-            <div class="bg-white w-fit p-5 drop-shadow-sm  flex flex-col justify-center items-center
-                        space-y-20 rounded-2xl
-                        max-[780px]:space-y-17 max-[780px]:p-4 ">
+        <!-- Sizes -->
+                <div class="">
+                    <div class="  p-2 pb-20   ">
+                            <div class="flex text-center  items-center border-b-2 border-black/20">
 
-                <!-- Item Container -->                
-                <div class="bg-[#FFFBFB] shadow-sm  rounded-2xl py-6 mt-6 px-1 h-[135px] 
-                            items-center drop-shadow-sm ">
-                        <img src="flavors/bigCone/bigCone.png" 
-                            alt="Big Cone" 
-                            class="-mt-15 ml-7 
-                                    w-[126px] h-[126px]">
-                        <h1 class=" text-center text-lg px-1 
-                                    max-[780px]:text-sm"
-                        >Big Cone
-                        </h1>
-                </div>
-                
-                <!-- sizes -->
-                <div>
-                    <div class=" p-2 -mt-15 px-10  border-b-2 border-black/20
-                                    active:scale-95">
-                            <div class="flex text-center items-center">
-
-                                <p class="max-[780px]:text-sm  text-center pr-0.5">₱</p> <p class="max-[780px]:text-sm pr-2 text-center mt-0.5">40</p>
+                                <p class=" max-[780px]:text-sm  text-center pr-0.5">₱</p> <p class="max-[780px]:text-sm pr-2 text-center mt-0.5">40</p>
                             </div>
                         </div>
                 </div>
 
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Big Cone'].quantity > 1) flavors['Big Cone'].quantity--; 
+                    else flavors['Big Cone'].quantity=1" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Big Cone'].quantity"></span>
+          </span>
 
-
-            <!-- Quantity Control -->
-            <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden ">
-                <button 
-                    @click="if(quantity > 1) quantity--; else quantity = 1"
-                    class=" px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full text-center items-center"
-                >−</button>
-
-                <span class="px-4 py-1 bg-white text-gray-800  ">
-                    <span x-text="quantity"></span>
-                </span>
-
-                <button 
-                    @click="quantity++"
-                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full text-center items-center"
-                >+</button>
-            </div>
+          <button @click.stop="flavors['Big Cone'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
         </div>
-
-
-        
-        </div>
-
-
-
-        
-        </div>
-
+      </div>
     </div>
 
 
- 
-   </div>
-       <!--Add to Order -->
-    <div class=" shrink-0 pb-2 flex float-right">
-        <button class="active:scale-95">
-            <img 
-                src="buttonPic/addToOrderBtn.png" 
-                alt="Add to Button"
-                class="  w-[130px] h-[40px]"
-            >
-        </button>
+  </div>
+
+  <!-- Add to Cart -->
+  <div class="shrink-0 pb-1 flex float-right pt-1 ">
+    <button class="active:scale-95" @click="addToCart()">
+      <img src="buttonPic/addToOrderBtn.png" alt="Add to Button" class="w-[130px] h-[40px]">
+    </button>
+  </div>
+
+    <!-- Custom Popup Modal -->
+  <div 
+    x-show="showPopup"
+    x-transition
+    class="fixed inset-0 flex items-center justify-center bg-black/40 z-50"
+    style="display: none;"
+  >
+
+    <div class="bg-white rounded-2xl shadow-xl w-[300px] p-6 text-center animate-popup">
+      
+      <h2 class="text-lg font-bold mb-3">Notification</h2>
+      
+      <p class="text-sm mb-5" x-text="popupMessage"></p>
+      
+      <button 
+        @click="showPopup = false"
+        class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full active:scale-95 transition"
+      >
+        OK
+      </button>
+
     </div>
+  </div>
+
+
 </body>
+
+
 </html>

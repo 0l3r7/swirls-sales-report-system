@@ -8,51 +8,57 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-no-repeat bg-cover bg-center h-screen p-5 font-PP"
-      x-data="{
-        flavors: {
-          'Brownie Avalanche': { quantity: 1, selectedSize: '' },
-          'Oreo Strawberry': { quantity: 1, selectedSize: '' },
-          'Oreo Chocolate':{ quantity: 1, selectedSize: '' }
-        },
-        selectedFlavor: 'Brownie Avalanche',
+x-data="{
+          flavors: {
+            'Brownie Avalanche': { quantity: 1, selectedSize: '' },
+            'Oreo Strawberry': { quantity: 1, selectedSize: '' },
+            'Oreo Chocolate': { quantity: 1, selectedSize: '' },
+            'Oreo Vanilla': { quantity: 1, selectedSize: '' },
+            'Strawberry': { quantity: 1, selectedSize: '' },
+            'Blueberry': { quantity: 1, selectedSize: '' },
+            'Snickers': { quantity: 1, selectedSize: '' },
+            'Kitkat': { quantity: 1, selectedSize: '' },
+          },
 
-        addToCart() {
-          const prices = { Small: 55, Medium: 69, Large: 85 };
-          let anyAdded = false;
+          showPopup: false,
+          popupMessage: '',
 
-          for (const [flavorflavor, data] of Object.entries(this.flavors)) {
-            if (data.selectedSize && data.quantity > 0) {
-              const price = prices[data.selectedSize];
+          addToCart() {
+            const prices = { Small: 55, Medium: 69, Large: 85 };
+            let anyAdded = false;
 
-              const item = {
-                name: 'DayDream Classic',
-                flavor: flavorflavor,
-                size: data.selectedSize,
-                quantity: data.quantity,
-                price: price
-              };
+            for (const [flavorName, data] of Object.entries(this.flavors)) {
+              if (data.selectedSize && data.quantity > 0) {
+                const price = prices[data.selectedSize];
 
-              // Save in localStorage
-              let cart = JSON.parse(localStorage.getItem('cart')) || [];
-              cart.push(item);
-              localStorage.setItem('cart', JSON.stringify(cart));
+                const item = {
+                  name: 'DayDream Classic',
+                  flavor: flavorName,
+                  size: data.selectedSize,
+                  quantity: data.quantity,
+                  price: price
+                };
 
-              window.parent.postMessage({ type: 'addToCart', item: item }, '*');
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push(item);
+                localStorage.setItem('cart', JSON.stringify(cart));
 
-              // Reset after adding
-              data.quantity = 1;
-              data.selectedSize = '';
-              anyAdded = true;
+                data.quantity = 1;
+                data.selectedSize = '';
+                anyAdded = true;
+              }
+            }
+
+            if (anyAdded) {
+              this.popupMessage = 'Items added to cart!';
+              this.showPopup = true;
+            } else {
+              this.popupMessage = 'Please select size and quantity!';
+              this.showPopup = true;
             }
           }
+        }">
 
-          if (anyAdded) {
-            alert('Selected items added to cart!');
-          } else {
-            alert('Please select size and quantity for at least one flavor!');
-          }
-        }
-      }">
 
   <h1 class="text-xl max-[780px]:text-sm mb-4 max-[780px]:mb-0">DayDream Classic Flavors</h1>
 
@@ -64,8 +70,14 @@
 
         <!-- Image -->
         <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
-          <img src="flavors/dayDreamClassicFlavors/brownieAvalanche.png" alt="Brownie Avalanche" class="-mt-15 ml-7 w-[126px] h-[126px]">
-          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">Brownie Avalanche</h1>
+          <img 
+            src="flavors/dayDreamClassicFlavorsPic/brownieAvalanche.png" 
+            alt="Brownie Avalanche" 
+            class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Brownie Avalanche
+          </h1>
         </div>
 
         <!-- Sizes -->
@@ -87,11 +99,20 @@
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Brownie Avalanche'].quantity > 1) flavors['Brownie Avalanche'].quantity--; else flavors['Brownie Avalanche'].quantity=1" class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">−</button>
+          <button @click.stop="if(flavors['Brownie Avalanche'].quantity > 1) flavors['Brownie Avalanche'].quantity--; 
+                  else flavors['Brownie Avalanche'].quantity=1" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                  −
+          </button>
+
           <span class="px-4 py-1 bg-white text-gray-800">
             <span x-text="flavors['Brownie Avalanche'].quantity"></span>
           </span>
-          <button @click.stop="flavors['Brownie Avalanche'].quantity++" class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+
+          <button @click.stop="flavors['Brownie Avalanche'].quantity++"
+              class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+              +
+          </button>
         </div>
       </div>
     </div>
@@ -102,8 +123,14 @@
 
         <!-- Image -->
         <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
-          <img src="flavors/dayDreamClassicFlavors/oreoStrawberry.png" alt="Oreo Strawberry" class="-mt-15 ml-7 w-[126px] h-[126px]">
-          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">Oreo Strawberry</h1>
+          <img 
+              src="flavors/dayDreamClassicFlavorsPic/oreoStrawberry.png" 
+              alt="Oreo Strawberry" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Oreo Strawberry
+          </h1>
         </div>
 
         <!-- Sizes -->
@@ -125,11 +152,20 @@
 
         <!-- Quantity -->
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
-          <button @click.stop="if(flavors['Oreo Strawberry'].quantity > 1) flavors['Oreo Strawberry'].quantity--; else flavors['Oreo Strawberry'].quantity=1" class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">−</button>
+          <button @click.stop="if(flavors['Oreo Strawberry'].quantity > 1) flavors['Oreo Strawberry'].quantity--; 
+                              else flavors['Oreo Strawberry'].quantity=1" 
+            class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+            −
+          </button>
+          
           <span class="px-4 py-1 bg-white text-gray-800">
             <span x-text="flavors['Oreo Strawberry'].quantity"></span>
           </span>
-          <button @click.stop="flavors['Oreo Strawberry'].quantity++" class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+
+          <button @click.stop="flavors['Oreo Strawberry'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                  +
+          </button>
         </div>
       </div>
     </div>
@@ -140,8 +176,15 @@
 
         <!-- Image -->
         <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
-          <img src="flavors/dayDreamClassicFlavors/oreoChocolate.png" alt="Oreo Chocolate" class="-mt-15 ml-7 w-[126px] h-[126px]">
-          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">Oreo Chocolate</h1>
+          <img 
+              src="flavors/dayDreamClassicFlavorsPic/oreoChocolate.png" 
+              alt="Oreo Chocolate" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Oreo Chocolate
+          </h1>
         </div>
 
         <!-- Sizes -->
@@ -165,24 +208,314 @@
         <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
           <button @click.stop="if(flavors['Oreo Chocolate'].quantity > 1) flavors['Oreo Chocolate'].quantity--; 
                     else flavors['Oreo Chocolate'].quantity=1" 
-                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">−</button>
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+
           <span class="px-4 py-1 bg-white text-gray-800">
             <span x-text="flavors['Oreo Chocolate'].quantity"></span>
           </span>
+
           <button @click.stop="flavors['Oreo Chocolate'].quantity++" 
-                class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
         </div>
       </div>
     </div>
 
+    <!-- Oreo Vanilla -->
+    <div class="rounded-2xl" @click="selectedFlavor='Oreo Vanilla'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/dayDreamClassicFlavorsPic/oreoVanilla.png" 
+              alt="Oreo Vanilla" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Oreo Vanilla
+          </h1>
+        </div>
+
+        <!-- Sizes -->
+        <div class="space-y-3 max-[780px]:space-y-2">
+          <template x-for="size in ['Small','Medium','Large']" :key="size">
+            <div>
+              <div @click.stop="flavors['Oreo Vanilla'].selectedSize = size"
+                   :class="flavors['Oreo Vanilla'].selectedSize === size ? 'bg-blue-200' : ''"
+                   class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
+                <div class="flex items-center">
+                  <h1 class="max-[780px]:text-sm pr-2 text-center" x-text="size + ':'"></h1>
+                  <p class="pr-0.5">₱</p>
+                  <p class="text-xs mt-0.5" x-text="size==='Small'?55:size==='Medium'?69:85"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Oreo Vanilla'].quantity > 1) flavors['Oreo Vanilla'].quantity--; 
+                    else flavors['Oreo Vanilla'].quantity=1" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Oreo Vanilla'].quantity"></span>
+          </span>
+
+          <button @click.stop="flavors['Oreo Vanilla'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strawberry -->
+    <div class="rounded-2xl" @click="selectedFlavor='Strawberry'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/dayDreamClassicFlavorsPic/strawberry.png" 
+              alt="Strawberry" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Strawberry
+          </h1>
+        </div>
+
+        <!-- Sizes -->
+        <div class="space-y-3 max-[780px]:space-y-2">
+          <template x-for="size in ['Small','Medium','Large']" :key="size">
+            <div>
+              <div @click.stop="flavors['Strawberry'].selectedSize = size"
+                   :class="flavors['Strawberry'].selectedSize === size ? 'bg-blue-200' : ''"
+                   class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
+                <div class="flex items-center">
+                  <h1 class="max-[780px]:text-sm pr-2 text-center" x-text="size + ':'"></h1>
+                  <p class="pr-0.5">₱</p>
+                  <p class="text-xs mt-0.5" x-text="size==='Small'?55:size==='Medium'?69:85"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Strawberry'].quantity > 1) flavors['Strawberry'].quantity--; 
+                    else flavors['Strawberry'].quantity=1" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Strawberry'].quantity"></span>
+          </span>
+
+          <button @click.stop="flavors['Strawberry'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blueberry -->
+    <div class="rounded-2xl" @click="selectedFlavor='Blueberry'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/dayDreamClassicFlavorsPic/blueberry.png" 
+              alt="Blueberry" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Blueberry
+          </h1>
+        </div>
+
+        <!-- Sizes -->
+        <div class="space-y-3 max-[780px]:space-y-2">
+          <template x-for="size in ['Small','Medium','Large']" :key="size">
+            <div>
+              <div @click.stop="flavors['Blueberry'].selectedSize = size"
+                   :class="flavors['Blueberry'].selectedSize === size ? 'bg-blue-200' : ''"
+                   class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
+                <div class="flex items-center">
+                  <h1 class="max-[780px]:text-sm pr-2 text-center" x-text="size + ':'"></h1>
+                  <p class="pr-0.5">₱</p>
+                  <p class="text-xs mt-0.5" x-text="size==='Small'?55:size==='Medium'?69:85"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Blueberry'].quantity > 1) flavors['Blueberry'].quantity--; 
+                    else flavors['Blueberry'].quantity=1" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Blueberry'].quantity"></span>
+          </span>
+
+          <button @click.stop="flavors['Blueberry'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Snickers -->
+    <div class="rounded-2xl" @click="selectedFlavor='Snickers'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/dayDreamClassicFlavorsPic/snickers.png" 
+              alt="Snickers" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Snickers
+          </h1>
+        </div>
+
+        <!-- Sizes -->
+        <div class="space-y-3 max-[780px]:space-y-2">
+          <template x-for="size in ['Small','Medium','Large']" :key="size">
+            <div>
+              <div @click.stop="flavors['Snickers'].selectedSize = size"
+                   :class="flavors['Snickers'].selectedSize === size ? 'bg-blue-200' : ''"
+                   class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
+                <div class="flex items-center">
+                  <h1 class="max-[780px]:text-sm pr-2 text-center" x-text="size + ':'"></h1>
+                  <p class="pr-0.5">₱</p>
+                  <p class="text-xs mt-0.5" x-text="size==='Small'?55:size==='Medium'?69:85"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Snickers'].quantity > 1) flavors['Snickers'].quantity--; 
+                    else flavors['Snickers'].quantity=1" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Snickers'].quantity"></span>
+          </span>
+
+          <button @click.stop="flavors['Snickers'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kitkat -->
+    <div class="rounded-2xl" @click="selectedFlavor='Kitkat'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/dayDreamClassicFlavorsPic/kitkat.png" 
+              alt="Kitkat" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Kitkat
+          </h1>
+        </div>
+
+        <!-- Sizes -->
+        <div class="space-y-3 max-[780px]:space-y-2">
+          <template x-for="size in ['Small','Medium','Large']" :key="size">
+            <div>
+              <div @click.stop="flavors['Kitkat'].selectedSize = size"
+                   :class="flavors['Kitkat'].selectedSize === size ? 'bg-blue-200' : ''"
+                   class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
+                <div class="flex items-center">
+                  <h1 class="max-[780px]:text-sm pr-2 text-center" x-text="size + ':'"></h1>
+                  <p class="pr-0.5">₱</p>
+                  <p class="text-xs mt-0.5" x-text="size==='Small'?55:size==='Medium'?69:85"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Kitkat'].quantity > 1) flavors['Kitkat'].quantity--; 
+                    else flavors['Kitkat'].quantity=1" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Kitkat'].quantity"></span>
+          </span>
+
+          <button @click.stop="flavors['Kitkat'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 
   <!-- Add to Cart -->
-  <div class="shrink-0 pb-2 flex float-right mt-3">
+  <div class="shrink-0 pb-1 flex float-right pt-1 ">
     <button class="active:scale-95" @click="addToCart()">
       <img src="buttonPic/addToOrderBtn.png" alt="Add to Button" class="w-[130px] h-[40px]">
     </button>
   </div>
+
+    <!-- Custom Popup Modal -->
+  <div 
+    x-show="showPopup"
+    x-transition
+    class="fixed inset-0 flex items-center justify-center bg-black/40 z-50"
+    style="display: none;"
+  >
+
+    <div class="bg-white rounded-2xl shadow-xl w-[300px] p-6 text-center animate-popup">
+      
+      <h2 class="text-lg font-bold mb-3">Notification</h2>
+      
+      <p class="text-sm mb-5" x-text="popupMessage"></p>
+      
+      <button 
+        @click="showPopup = false"
+        class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full active:scale-95 transition"
+      >
+        OK
+      </button>
+
+    </div>
+  </div>
+
 
 </body>
 </html>
