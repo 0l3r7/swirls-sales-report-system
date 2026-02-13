@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Out</title>
+
+    
+    <link href="./src/output.css" rel="stylesheet">
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+<body 
+x-data="{
+    open: false,
+    src: '',
+    cart: [],
+
+    init() {
+        this.loadCart()
+
+        window.addEventListener('storage', () => {
+            this.loadCart()
+        })
+    },
+
+    loadCart(){
+        this.cart = JSON.parse(localStorage.getItem('cart')) || []
+    },
+
+    clearCart(){
+        localStorage.removeItem('cart')
+        this.cart = []
+    },
+
+    removeItem(index){
+        this.cart.splice(index, 1)
+        localStorage.setItem('cart', JSON.stringify(this.cart))
+    }
+
+}"
+
+  class="min-h-screen bg-no-repeat bg-cover bg-center flex flex-col items-center justify-center overflow-hidden bg-pink-200 "
+  style="background-image: url('img/settings_sales_ordererzxs.png');"
+>
+
+  <!-- Header -->
+    <header class="w-full flex items-center full max-w-2xl mb-3 mt-3  gap-18">
+
+        <!-- Logo & Name -->
+        <div class="flex items-center space-x-3 mb-[15%]">
+            <a href="index.html">
+            <img src="img/swirls-logo.webp" alt="Swirls Logo" class="w-12 h-12" />
+            </a>
+            <h1 class="text-2xl font-semibold text-gray-800">Swirls</h1>
+        </div>
+
+
+        <div class="text-center space-y-2 mt-5">
+            <h1 class="text-xl">We Serve Happiness!</h1>
+            <a href="index.html">
+            <img src="img/ep_success-filled.png" alt="Swirls Logo" class="w-15 mx-auto" />
+            </a>
+            <h1 class="text-2xl">Order success, thank you!</h1>
+        </div>
+        
+    </header>
+    <div class="flex items-center flex-wrap flex-col justify-center w-full h-full py-6 lg:w-auto">
+        <h1 class=" w-full text-lg flex items-center full max-w-2xl mb-2  gap-3">Order Summary</h1>
+
+        <!-- Orders Box -->
+        <div class="p-6 outline-2 rounded-2xl shadow-2xl space-y-4 text-center w-full max-w-2xl">
+            <!-- Orders List -->
+            <div class="max-h-[35vh] overflow-y-auto w-full px-2">
+
+                <template x-if="cart.length === 0">
+                    <p class="text-gray-500 text-center">No orders yet.</p>
+                </template>
+                
+                <template x-for="(item, index) in cart" :key="index">
+                    <div class="flex justify-between border-b-2 border-black px-5 py-3">
+
+                        <!-- Left side (Item Info) -->
+                        <div class="text-left">
+                            <p class="font-semibold" x-text="item.name"></p>
+                            <p class="text-sm text-gray-600"
+                            x-text="item.flavor + ' - ' + item.size">
+                            </p>
+                            <p class="text-sm text-gray-500"
+                            x-text="'₱' + Number(item.price).toFixed(2) + ' x ' + item.quantity">
+                            </p>
+                        </div>
+
+                        <!-- Right side (Total per item) -->
+                        <div class="font-bold"
+                            x-text="'₱' + (Number(item.price) * Number(item.quantity)).toFixed(2)">
+                        </div>
+
+                    </div>
+                </template>
+
+                <!-- Receipt Total -->
+                <div class="flex justify-between px-5 py-4 font-bold text-lg">
+                    <p>Total</p>
+                    <p x-text="'₱' + cart
+                        .reduce((sum, i) => sum + Number(i.price)*Number(i.quantity), 0)
+                        .toFixed(2)">
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="flex justify-end w-full pr-13 p-3">
+            <a href="index.html">
+                <button>
+                    <img 
+                        src="buttonPic/homeBtn.png" 
+                        alt="Home Button"
+                        class="active:scale-95 w-[40px] h-[50px]"
+                    >
+                </button>
+            </a>
+        </div>
+
+
+
+    </div>
+
+</body>
+</html>

@@ -46,7 +46,7 @@
     
 
 <!-- ================= Cart ================= -->
-        <aside class="float-end w-[25%] max-[780px]:w-[38%] bg-white h-screen shadow flex flex-col">
+        <aside class="float-end w-[25%] max-[780px]:w-[36%] bg-white h-screen shadow flex flex-col">
 
             <!-- Header -->
             <div class="py-5 shadow-sm shrink-0">
@@ -56,12 +56,12 @@
             </div>
 
             <!-- Orders Label -->   
-            <div class=" flex justify-end text-sm mr-11 space-x-4
+            <div class=" flex justify-end text-sm mr-8 space-x-3.5
                         max-[780px]:text-[9px] max-[780px]:space-x-3 
                         max-[780px]:mr-6 mt-3">
-                <p>Size</p>
-                <p class="">Qty</p>
-                <p>Amount</p>
+                <p class="pr-4">Size</p>
+                <p class="pr-2">Qty</p>
+                <p class="">Amount</p>
             </div>
             <!-- Orders (Scrollable ) -->
             <div class="flex-1 overflow-y-auto px-2 drop-shadow-2xl space-y-2">
@@ -72,25 +72,24 @@
                         <div class="flex flex-col  p-2 rounded-xl border border-black/20 w-85 
                                   text-sm  max-[780px]:text-[10px]">
                             <!-- Left Side -->
-                            <div class="flex space-x-9  ">
+                            <div class="flex justify-between   ">
                                 <!-- Item name -->
                                 <div class=" ">
                                     <p class="font-semibold max-[780px]:mr-2  " 
                                        x-text="item.name"></p>
 
                                    <!-- Right Side -->
-                                    <div class="flex   justify-between">
+                                    <div class="flex flex-row justify-between w-full">
                                         <!-- Item flavor -->
-                                        <p class=" text-black -mr-3" 
-                                            x-text="item.flavor ">
+                                        <p class="text-black"
+                                        x-text="item.flavor">
                                         </p>      
 
-                                        <!-- Item Total -->
-                                        <div class="font-bold -mr-35"
-                                            x-text="'₱' + (item.price * item.quantity)">
-                                        </div>
+
                                     </div>
                                 </div>
+
+                            <div class="flex flex-col">
 
                                 <div class="flex space-x-4  ">
                                     <!-- Item size -->
@@ -101,10 +100,18 @@
                                     </p>
                                     <!-- Item price -->
                                     <p class=" " 
-                                        x-text="'₱' + item.price  ">
+                                        x-text="'₱' + Number(item.price).toFixed(2) ">
                                     </p>
-
                                 </div>
+                                    <!-- Item Total -->
+                                    <div class="font-bold text-right"
+                                            x-text="'₱' + (Number(item.price) * Number(item.quantity)).toFixed(2)">
+                                    </div>
+                            </div>
+
+
+
+
                             </div>
 
                         </div>
@@ -144,20 +151,27 @@
             <!-- Footer  -->
             <div class="p-4 border-t border-black/20 shrink-0 shadow">
 
-                <!-- Total -->
-                <div class=" text-sm mb-3 flex justify-between" >
-                    <h1>Total: </h1> <h1 x-text=" '₱' + cart.reduce((sum, i) => sum + i.price*i.quantity, 0)"></h1>
-                </div>
+            <!-- Total -->
+            <div class="text-sm mb-3 flex justify-between">
+                <h1>Total: </h1>
+                <h1 x-text="'₱' + cart
+                    .reduce((sum, i) => sum + Number(i.price) * Number(i.quantity), 0)
+                    .toFixed(2)">
+                </h1>
+            </div>
+
                 
                 <!-- Chect Out -->
 
                 <div>
+                    <a href="checkOut.html">
                     <button class="active:scale-95">
                         <img 
                             src="buttonPic/checkOutButton.png" 
                             alt="Check Out"
                         >
                     </button>
+                    </a>
                 </div>
             
 
@@ -193,7 +207,7 @@
             <main>
 
                 <!--Product-->
-                <div class="flex flex-wrap items-center justify-center">
+                <div class="flex flex-wrap items-center justify-center ">
 
                     <!--DayDream Classic-->
                     <div class=" ">
@@ -332,7 +346,7 @@
                     
 
                 </div>
-            
+             <!--back Btn-->
                 <div class="p-5 w-fit">
                     <a href="index.html">
                     <img 
