@@ -30,7 +30,13 @@
     clearCart(){
         localStorage.removeItem('cart')
         this.cart = []
+    },
+
+    removeItem(index){
+        this.cart.splice(index, 1)
+        localStorage.setItem('cart', JSON.stringify(this.cart))
     }
+
 }">
 
 
@@ -40,7 +46,7 @@
     
 
 <!-- ================= Cart ================= -->
-        <aside class="float-end w-[25%] max-[780px]:w-[35%] bg-white h-screen shadow flex flex-col">
+        <aside class="float-end w-[25%] max-[780px]:w-[38%] bg-white h-screen shadow flex flex-col">
 
             <!-- Header -->
             <div class="py-5 shadow-sm shrink-0">
@@ -49,34 +55,90 @@
                 </h1>
             </div>
 
+            <!-- Orders Label -->   
+            <div class=" flex justify-end text-sm mr-11 space-x-4
+                        max-[780px]:text-[9px] max-[780px]:space-x-3 
+                        max-[780px]:mr-6 mt-3">
+                <p>Size</p>
+                <p class="">Qty</p>
+                <p>Amount</p>
+            </div>
+            <!-- Orders (Scrollable ) -->
+            <div class="flex-1 overflow-y-auto px-2 drop-shadow-2xl space-y-2">
+
+                <template x-for="(item, index) in cart" :key="index">
+
+                    <div class="flex space-x-1">
+                        <div class="flex flex-col  p-2 rounded-xl border border-black/20 w-85 
+                                  text-sm  max-[780px]:text-[10px]">
+                            <!-- Left Side -->
+                            <div class="flex space-x-9  ">
+                                <!-- Item name -->
+                                <div class=" ">
+                                    <p class="font-semibold max-[780px]:mr-2  " 
+                                       x-text="item.name"></p>
+
+                                   <!-- Right Side -->
+                                    <div class="flex   justify-between">
+                                        <!-- Item flavor -->
+                                        <p class=" text-black -mr-3" 
+                                            x-text="item.flavor ">
+                                        </p>      
+
+                                        <!-- Item Total -->
+                                        <div class="font-bold -mr-35"
+                                            x-text="'₱' + (item.price * item.quantity)">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex space-x-4  ">
+                                    <!-- Item size -->
+                                    <p x-text="item.size ? '  ' + item.size : ''"></p>
+                                    <!-- Item quantity -->
+                                    <p class=" " 
+                                        x-text="item.quantity">
+                                    </p>
+                                    <!-- Item price -->
+                                    <p class=" " 
+                                        x-text="'₱' + item.price  ">
+                                    </p>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                            <!-- Delete Button -->
+                            <div class="flex   ">
+                            <!-- clear item button -->
+                                <button 
+                                    @click="removeItem(index)"
+                                    class="active:scale-95 hover:opacity-80 transition"
+                                >
+                                    <img 
+                                        src="buttonPic/delete.png" 
+                                        alt="Delete"
+                                        class="w-5 h-5"
+                                    >
+                                </button>
+                            </div>
+
+                    </div>
+
+                </template>
+
+
+            </div>
+
             <!-- Clear All -->
             <div class="text-right  p-2 mr-3 ">
                     <button 
                         @click="clearCart()"
-                        class="text-red-500 text-sm underline hover:text-red-700  rounded-lg active:scale-95  hover:active:scale-95">
+                        class="text-red-500  max-[780px]:text-xs text-sm underline hover:text-red-700  rounded-lg active:scale-95  hover:active:scale-95">
                         Clear All
                     </button>
-            </div>
-
-            <!-- Orders (Scrollable ONLY this) -->
-            <div class="flex-1 overflow-y-auto px-3 drop-shadow-2xl">
-
-                <template x-for="(item, index) in cart" :key="index">
-                    <div class="flex justify-between py-2 border-b">
-                        <div>
-                            <p class="font-semibold" x-text="item.name"></p>
-                            <p class="text-sm text-black" 
-                                x-text="item.flavor + (item.size ? ' - ' + item.size : '')"></p>
-                            <p class="text-sm text-gray-500" 
-                                x-text="'₱' + item.price + ' x ' + item.quantity"></p>
-                        </div>
-
-                        <div class="font-bold"
-                            x-text="'₱' + (item.price * item.quantity)">
-                        </div>
-                    </div>
-                </template>
-
             </div>
 
             <!-- Footer  -->

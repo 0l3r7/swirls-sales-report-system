@@ -24,7 +24,7 @@ x-data="{
           popupMessage: '',
 
           addToCart() {
-            const prices = { Small: 55, Medium: 69, Large: 85 };
+            const prices = { Small: 55.00, Medium: 69.00, Large: 85.00 };
             let anyAdded = false;
 
             for (const [flavorName, data] of Object.entries(this.flavors)) {
@@ -84,7 +84,10 @@ x-data="{
         <div class="space-y-3 max-[780px]:space-y-2">
           <template x-for="size in ['Small','Medium','Large']" :key="size">
             <div>
-              <div @click.stop="flavors['Brownie Avalanche'].selectedSize = size"
+              <div @click.stop="
+                      flavors['Brownie Avalanche'].selectedSize === size
+                          ? flavors['Brownie Avalanche'].selectedSize = ''
+                          : flavors['Brownie Avalanche'].selectedSize = size"
                    :class="flavors['Brownie Avalanche'].selectedSize === size ? 'bg-blue-200' : ''"
                    class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
                 <div class="flex items-center">
@@ -137,7 +140,10 @@ x-data="{
         <div class="space-y-3 max-[780px]:space-y-2">
           <template x-for="size in ['Small','Medium','Large']" :key="size">
             <div>
-              <div @click.stop="flavors['Oreo Strawberry'].selectedSize = size"
+              <div @click.stop="
+                      flavors['Oreo Strawberry'].selectedSize === size
+                          ? flavors['Oreo Strawberry'].selectedSize = ''
+                          : flavors['Oreo Strawberry'].selectedSize = size"
                    :class="flavors['Oreo Strawberry'].selectedSize === size ? 'bg-blue-200' : ''"
                    class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
                 <div class="flex items-center">
@@ -191,7 +197,10 @@ x-data="{
         <div class="space-y-3 max-[780px]:space-y-2">
           <template x-for="size in ['Small','Medium','Large']" :key="size">
             <div>
-              <div @click.stop="flavors['Oreo Chocolate'].selectedSize = size"
+              <div @click.stop="
+                      flavors['Oreo Chocolate'].selectedSize === size
+                          ? flavors['Oreo Chocolate'].selectedSize = ''
+                          : flavors['Oreo Chocolate'].selectedSize = size"
                    :class="flavors['Oreo Chocolate'].selectedSize === size ? 'bg-blue-200' : ''"
                    class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
                 <div class="flex items-center">
@@ -243,7 +252,10 @@ x-data="{
         <div class="space-y-3 max-[780px]:space-y-2">
           <template x-for="size in ['Small','Medium','Large']" :key="size">
             <div>
-              <div @click.stop="flavors['Oreo Vanilla'].selectedSize = size"
+              <div @click.stop="
+                      flavors['Oreo Vanilla'].selectedSize === size
+                          ? flavors['Oreo Vanilla'].selectedSize = ''
+                          : flavors['Oreo Vanilla'].selectedSize = size"
                    :class="flavors['Oreo Vanilla'].selectedSize === size ? 'bg-blue-200' : ''"
                    class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
                 <div class="flex items-center">
@@ -295,7 +307,10 @@ x-data="{
         <div class="space-y-3 max-[780px]:space-y-2">
           <template x-for="size in ['Small','Medium','Large']" :key="size">
             <div>
-              <div @click.stop="flavors['Strawberry'].selectedSize = size"
+              <div @click.stop="
+                      flavors['Strawberry'].selectedSize === size
+                          ? flavors['Strawberry'].selectedSize = ''
+                          : flavors['Strawberry'].selectedSize = size"
                    :class="flavors['Strawberry'].selectedSize === size ? 'bg-blue-200' : ''"
                    class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
                 <div class="flex items-center">
@@ -347,7 +362,10 @@ x-data="{
         <div class="space-y-3 max-[780px]:space-y-2">
           <template x-for="size in ['Small','Medium','Large']" :key="size">
             <div>
-              <div @click.stop="flavors['Blueberry'].selectedSize = size"
+              <div @click.stop="
+                      flavors['Blueberry'].selectedSize === size
+                          ? flavors['Blueberry'].selectedSize = ''
+                          : flavors['Blueberry'].selectedSize = size"
                    :class="flavors['Blueberry'].selectedSize === size ? 'bg-blue-200' : ''"
                    class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
                 <div class="flex items-center">
@@ -399,7 +417,10 @@ x-data="{
         <div class="space-y-3 max-[780px]:space-y-2">
           <template x-for="size in ['Small','Medium','Large']" :key="size">
             <div>
-              <div @click.stop="flavors['Snickers'].selectedSize = size"
+              <div @click.stop="
+                      flavors['Snickers'].selectedSize === size
+                          ? flavors['Snickers'].selectedSize = ''
+                          : flavors['Snickers'].selectedSize = size"
                    :class="flavors['Snickers'].selectedSize === size ? 'bg-blue-200' : ''"
                    class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
                 <div class="flex items-center">
@@ -451,7 +472,10 @@ x-data="{
         <div class="space-y-3 max-[780px]:space-y-2">
           <template x-for="size in ['Small','Medium','Large']" :key="size">
             <div>
-              <div @click.stop="flavors['Kitkat'].selectedSize = size"
+              <div @click.stop="
+                      flavors['Kitkat'].selectedSize === size
+                          ? flavors['Kitkat'].selectedSize = ''
+                          : flavors['Kitkat'].selectedSize = size"
                    :class="flavors['Kitkat'].selectedSize === size ? 'bg-blue-200' : ''"
                    class="p-2 px-10 rounded-full inset-shadow-sm shadow active:scale-95 cursor-pointer text-center">
                 <div class="flex items-center">
