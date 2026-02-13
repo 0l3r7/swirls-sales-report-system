@@ -8,57 +8,58 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-no-repeat bg-cover bg-center h-screen p-5 font-PP"
-x-data="{
-          flavors: {
-            'Brownie Avalanche': { quantity: 1, selectedSize: '' },
-            'Oreo Strawberry': { quantity: 1, selectedSize: '' },
-            'Oreo Chocolate': { quantity: 1, selectedSize: '' },
-            'Oreo Vanilla': { quantity: 1, selectedSize: '' },
-            'Strawberry': { quantity: 1, selectedSize: '' },
-            'Blueberry': { quantity: 1, selectedSize: '' },
-            'Snickers': { quantity: 1, selectedSize: '' },
-            'Kitkat': { quantity: 1, selectedSize: '' },
-          },
+      x-data="{
+                flavors: {
+                  'Brownie Avalanche': { quantity: 1, selectedSize: '' },
+                  'Oreo Strawberry': { quantity: 1, selectedSize: '' },
+                  'Oreo Chocolate': { quantity: 1, selectedSize: '' },
+                  'Oreo Vanilla': { quantity: 1, selectedSize: '' },
+                  'Strawberry': { quantity: 1, selectedSize: '' },
+                  'Blueberry': { quantity: 1, selectedSize: '' },
+                  'Snickers': { quantity: 1, selectedSize: '' },
+                  'Kitkat': { quantity: 1, selectedSize: '' },
+                },
 
-          showPopup: false,
-          popupMessage: '',
+                showPopup: false,
+                popupMessage: '',
 
-          addToCart() {
-            const prices = { Small: 55.00, Medium: 69.00, Large: 85.00 };
-            let anyAdded = false;
+                displaySizes: { Small: '8oz', Medium: '12oz', Large: '16oz'},
 
-            for (const [flavorName, data] of Object.entries(this.flavors)) {
-              if (data.selectedSize && data.quantity > 0) {
-                const price = prices[data.selectedSize];
+                addToCart() {
+                  const prices = { Small: 55.00, Medium: 69.00, Large: 85.00 };
+                  let anyAdded = false;
 
-                const item = {
-                  name: 'DayDream Classic',
-                  flavor: flavorName,
-                  size: data.selectedSize,
-                  quantity: data.quantity,
-                  price: price
-                };
+                  for (const [flavorName, data] of Object.entries(this.flavors)) {
+                    if (data.selectedSize && data.quantity > 0) {
+                      const price = prices[data.selectedSize];
 
-                let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                cart.push(item);
-                localStorage.setItem('cart', JSON.stringify(cart));
+                      const item = {
+                        name: 'DayDream Classic',
+                        flavor: flavorName,
+                        size: data.selectedSize,
+                        quantity: data.quantity,
+                        price: price
+                      };
 
-                data.quantity = 1;
-                data.selectedSize = '';
-                anyAdded = true;
-              }
-            }
+                      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                      cart.push(item);
+                      localStorage.setItem('cart', JSON.stringify(cart));
 
-            if (anyAdded) {
-              this.popupMessage = 'Items added to cart!';
-              this.showPopup = true;
-            } else {
-              this.popupMessage = 'Please select size and quantity!';
-              this.showPopup = true;
-            }
-          }
-        }">
+                      data.quantity = 1;
+                      data.selectedSize = '';
+                      anyAdded = true;
+                    }
+                  }
 
+                  if (anyAdded) {
+                    this.popupMessage = 'Items added to cart!';
+                    this.showPopup = true;
+                  } else {
+                    this.popupMessage = 'Please select size and quantity!';
+                    this.showPopup = true;
+                  }
+                }
+              }">
 
   <h1 class="text-xl max-[780px]:text-sm mb-4 max-[780px]:mb-0">DayDream Classic Flavors</h1>
 
