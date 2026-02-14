@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ flavors: '', price:'', Rprice: 0, msg: '', show: false }">
+<html lang="en"">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,132 +7,231 @@
     <link href="./src/output.css" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="min-h-screen bg-no-repeat bg-cover bg-center h-screen overflow-hidden" 
-      style="background-image: url('img/Flavors.png');
-      ">
-
-     <!-- Next Button -->
-        <div class="absolute right-4 pt-5">
-            <div 
-                class="w-12 h-12 bg-white flex items-center border-2 justify-center rounded-full shadow-md hover:bg-[rgba(120,255,201,1)] cursor-pointer transition"
-                @click="
-                        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-                        if(orders .length>0){
-                            window.location.href = 'orders.html';
-                        }else{
-                            msg = '⚠️ Select both flavor and size!';
-                            }
-                            show = true;
-                            setTimeout(() => show = false, 2000);"
-                        >
-
-                <h1 class="text-3xl pb-[12%] font-bold">></h1>
-            </div>
-        </div>
-
-         <div class="flex h-full">
-
-            <!-- Side Panel -->
-            <aside class="col-span-1 mr-[2%] w-[250px] border-r-2  bg-white  flex flex-col items-center">
-
-                <section class="text-center mt-2">
-                    <a href="index.html"><img src="img/swirls-logo.webp" alt="logo" class="w-40 sm:w-32 md:w-20 mx-auto"></a>
-                    <h1 class="mt-2 text-xl font-bold">Soda Float</h1>
-                    <h2 class="mt-1 mb-2 text-gray-600">Flavors</h2>
-
-                     <ul class="flex flex-col gap-2">
-
-                        <template x-for="flavorSFL in ['Pepsi / Coke', 'Mountain Dew / Royal', 'Root beer / Sarsi']">
-
-                            <li 
-                            class="px-4 py-2 rounded-full hover:bg-pink-300 w-fit cursor-pointer transition" 
-                            :class="{ 'bg-pink-400 text-white': flavors === flavorSFL }"
-                            @click="flavors= flavorSFL"
-                             x-text="flavorSFL"
-                            >
-                            
-                            </li>
-                        </template>
-                     </ul>
-                    
-                </section>
-            </aside>
-            <!-- Back Button -->
-            <div class="flex items-end pb-15">
-                <a href="Menu.html">
-                    <div class="w-12 h-12 bg-white flex items-center border-2 justify-center rounded-full shadow-md hover:bg-[rgba(120,255,201,1)] cursor-pointer transition">
-                    <h1 class="text-3xl pb-[12%] font-bold">&lt;</h1>
-                    </div>
-                </a>
-            </div>
+<body class="bg-no-repeat bg-cover bg-center h-screen p-5 font-PP"
+        x-data="{
+                flavors: {
+                    'Coke / Pepsi': { quantity: 0, },
+                    'Mountain Dew / Royal': { quantity: 0, },
+                    'Rootbear / Sarsi': { quantity: 0, },
 
 
-             <!-- Sizes -->
-        <main class="flex-1 flex flex-col items-center justify-center mb-[10%] pr-14">
-            <div class="flex flex-wrap justify-center gap-6">
-                    <div 
-                    class="bg-white p-4 pl-7 pr-7 rounded-xl text-center shadow-md hover:bg-green-300 cursor-pointer transition" 
-                    :class="{'text-black border-4 border-green-300' : price === 'Php 35'}"
-                    @click="price = 'Php 35'; Rprice = 35"
-                    >
+                },
 
-                    <h3 class="text-xl">Php 35</h3>
+                showPopup: false,
+                popupMessage: '',
 
-                    </div>
-            </div>
+                addToCart() {
+                    const price = 35; // fixed price
+                    let anyAdded = false;
 
-            <div class=" flex flex-col gap-3 items-center justify-center  mt-[10%] pr-5">
+                    for (const [flavorName, data] of Object.entries(this.flavors)) {
 
-            <!-- Add Button -->
-            <button  
-                    type="button"
-                    class="w-16 h-16 mt-[10%]  bg-white flex items-center justify-center rounded-full shadow-md border-2 hover:bg-[rgba(120,255,201,1)] cursor-pointer transition text-6xl font-bold"
-                    @click="
-                    if (flavors && price){
-                        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-                        orders.push({ flavorflt: flavors, price: price, Rprice: Rprice});
-                        localStorage.setItem('orders', JSON.stringify(orders));
-                        msg = `✅ Added: ${flavors} - ${price}`;
-                    } else {
-                        msg = '⚠️ Select both flavor and size!';
+                        if (data.quantity > 0) {
+
+                        const item = {
+                            name: 'Soda Float',
+                            flavor: flavorName,
+                            quantity: data.quantity,
+                            price: price,
+
+                        };
+
+                        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                        cart.push(item);
+                        localStorage.setItem('cart', JSON.stringify(cart));
+
+                        data.quantity = 0;
+                        anyAdded = true;
+                        }
                     }
-                    show = true;
-                    setTimeout(() => show = false, 2000);
-                    ">
 
-                    <span class="text-red-300 mb-3">+</span>
+                    if (anyAdded) {
+                        this.popupMessage = 'Soda Float added to cart!';
+                        this.showPopup = true;
+                    } else {
+                        this.popupMessage = 'Please select quantity!';
+                        this.showPopup = true;
+                    }
+                    }
 
-            </button>
-
-             <!-- POPUP di ko ma alala tamang term-->
-                 <div 
-                    x-show="show" 
-                    x-transition 
-                    class=" bg-white px-4 py-2 t-20 rounded-lg shadow-lg text-center text-sm font-medium "
-                    style="display: none;"
-                >
-                    <span x-text="msg"></span>
-                </div>
+                }">
 
 
-                <!--product-->
-                <div class=" flex items-end absolute right-4 bottom-4  pr-15  justify-between">
-                    <div class="w-40 sm:w-32 md:w-35 rotate-320 ">
-                                <img src="img/Soda Float.png" alt="pic">
-                    </div>
-                </div>
-                <div class=" flex items-end absolute right-1 bottom-0.5 pb-5  justify-between">
-                    <div class="w-40 sm:w-32 md:w-45 rotate-350">
-                                <img src="img/Soda Float.png" alt="pic">
-                    </div>
-                </div>
+  <h1 class="text-xl max-[780px]:text-sm mb-4 max-[780px]:mb-0">Soda Float Flavors</h1>
 
+  <div class="flex flex-1 space-x-5 overflow-x-auto  items-center px-2 py-3 no-scrollbar ">
 
-        </main>
+    <!-- Coke / Pepsi -->
+    <div class="rounded-2xl" @click="selectedFlavor='Coke / Pepsi'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
 
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/sodaFloat/cokePepsiSodaFloat.png" 
+              alt="Coke / Pepsi" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
 
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Coke / Pepsi
+          </h1>
         </div>
-        
+
+        <!-- Sizes -->
+                <div class="">
+                    <div class="  p-2 pb-20   ">
+                            <div class="flex text-center  items-center border-b-2 border-black/20">
+
+                                <p class=" max-[780px]:text-sm  text-center pr-0.5">₱</p> 
+                                <p class="max-[780px]:text-sm pr-2 text-center mt-0.5">35</p>
+                            </div>
+                        </div>
+                </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Coke / Pepsi'].quantity > 0) flavors['Coke / Pepsi'].quantity--; 
+                    else flavors['Coke / Pepsi'].quantity=0" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Coke / Pepsi'].quantity"></span>
+          </span>
+
+          <button @click.stop="flavors['Coke / Pepsi'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+     <!-- Mountain Dew / Royal -->
+    <div class="rounded-2xl" @click="selectedFlavor='Mountain Dew / Royal'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/sodaFloat/mountainDewRoyalSodaFloat.png" 
+              alt="Mountain Dew / Royal" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Mountain Dew / Royal
+          </h1>
+        </div>
+
+        <!-- Sizes -->
+                <div class="">
+                    <div class="  p-2 pb-20   ">
+                            <div class="flex text-center  items-center border-b-2 border-black/20">
+
+                                <p class=" max-[780px]:text-sm  text-center pr-0.5">₱</p> 
+                                <p class="max-[780px]:text-sm pr-2 text-center mt-0.5">35</p>
+                            </div>
+                        </div>
+                </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Mountain Dew / Royal'].quantity > 0) flavors['Mountain Dew / Royal'].quantity--; 
+                    else flavors['Mountain Dew / Royal'].quantity=0" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Mountain Dew / Royal'].quantity"></span>
+          </span>
+
+          <button @click.stop="flavors['Mountain Dew / Royal'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+     <!-- Rootbear / Sarsi -->
+    <div class="rounded-2xl" @click="selectedFlavor='Rootbear / Sarsi'">
+      <div class="bg-white w-fit p-5 drop-shadow-sm flex flex-col justify-center items-center space-y-3 rounded-2xl max-[780px]:space-y-2 max-[780px]:p-4">
+
+        <!-- Image -->
+        <div class="bg-[#FFFBFB] shadow-sm rounded-2xl py-6 mt-6 px-1 h-[135px] items-center drop-shadow-sm">
+          <img 
+              src="flavors/sodaFloat/rootbearSarsiSodaFloat.png" 
+              alt="Rootbear / Sarsi" 
+              class="-mt-15 ml-7 w-[126px] h-[126px]"
+          >
+
+          <h1 class="text-center text-lg px-1 max-[780px]:text-sm">
+            Rootbear / Sarsi
+          </h1>
+        </div>
+
+        <!-- Sizes -->
+                <div class="">
+                    <div class="  p-2 pb-20   ">
+                            <div class="flex text-center  items-center border-b-2 border-black/20">
+
+                                <p class=" max-[780px]:text-sm  text-center pr-0.5">₱</p> 
+                                <p class="max-[780px]:text-sm pr-2 text-center mt-0.5">35</p>
+                            </div>
+                        </div>
+                </div>
+
+        <!-- Quantity -->
+        <div class="flex justify-between space-x-7 p-1 px-5 rounded-full inset-shadow-sm shadow overflow-hidden">
+          <button @click.stop="if(flavors['Rootbear / Sarsi'].quantity > 0) flavors['Rootbear / Sarsi'].quantity--; 
+                    else flavors['Rootbear / Sarsi'].quantity=0" 
+                    class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">
+                    −
+          </button>
+          
+          <span class="px-4 py-1 bg-white text-gray-800">
+            <span x-text="flavors['Rootbear / Sarsi'].quantity"></span>
+          </span>
+
+          <button @click.stop="flavors['Rootbear / Sarsi'].quantity++" 
+                  class="px-2.5 bg-gray-300 hover:bg-gray-400 font-bold rounded-full">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add to Cart -->
+  <div class="shrink-0 pb-1 flex float-right pt-1 ">
+    <button class="active:scale-95" @click="addToCart()">
+      <img src="buttonPic/addToOrderBtn.png" alt="Add to Button" class="w-[130px] h-[40px]">
+    </button>
+  </div>
+
+    <!-- Custom Popup Modal -->
+  <div 
+    x-show="showPopup"
+    x-transition
+    class="fixed inset-0 flex items-center justify-center bg-black/40 z-50"
+    style="display: none;"
+  >
+
+    <div class="bg-white rounded-2xl shadow-xl w-[300px] p-6 text-center animate-popup">
+      
+      <h2 class="text-lg font-bold mb-3">Notification</h2>
+      
+      <p class="text-sm mb-5" x-text="popupMessage"></p>
+      
+      <button 
+        @click="showPopup = false"
+        class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full active:scale-95 transition"
+      >
+        OK
+      </button>
+
+    </div>
+  </div>
+
 
 </body>
 </html>

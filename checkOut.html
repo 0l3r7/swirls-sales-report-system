@@ -102,7 +102,7 @@ style="background-image: url('img/settings_sales_ordererzxs.png');"
                     <div class="flex justify-between border-b border-gray-300 px-5 py-2">
 
                         <!-- Left side -->
-                        <div class="flex justify-between w-full text-[11px] border-b-1 p-2 ">
+                        <div class="flex justify-between w-full text-xs border-b-1 p-2 ">
                             <div class="space-y-2">
                                 <div class=" flex space-x-2">
                                     <p class="font-semibold " x-text="item.name + ' - ' "></p>
@@ -112,6 +112,11 @@ style="background-image: url('img/settings_sales_ordererzxs.png');"
                                     <p x-text="'₱' +item.price"></p>
                                     <p x-text="item.size ? ' ' + sizeLabels[item.size] : ''"></p>
                                 </div>
+                                <!-- Dipped Display -->
+                                <p class="text-xs "
+                                    x-show="item.dipped == 1">
+                                        Dipped (+₱5.00)
+                                </p> 
                             </div>
 
                             <div class="space-y-2">
@@ -155,6 +160,7 @@ style="background-image: url('img/settings_sales_ordererzxs.png');"
             <a href="index.html">
                 <button>
                     <img 
+                        @click="clearCart()"
                         src="buttonPic/homeBtn.png" 
                         alt="Home Button"
                         class="active:scale-95 w-[50px] h-[60px] transition"
